@@ -8,10 +8,10 @@
 
 | 类型 | 链接 |
 | --- | --- |
-| GitHub Raw（gz） | `https://raw.githubusercontent.com/<你的用户名>/zte-epg-public/main/epg.xml.gz` |
-| GitHub Raw（xml） | `https://raw.githubusercontent.com/<你的用户名>/zte-epg-public/main/epg.xml` |
-| jsDelivr CDN（gz，推荐） | `https://cdn.jsdelivr.net/gh/<你的用户名>/zte-epg-public@main/epg.xml.gz` |
-| jsDelivr CDN（xml） | `https://cdn.jsdelivr.net/gh/<你的用户名>/zte-epg-public@main/epg.xml` |
+| GitHub Raw（gz） | `https://raw.githubusercontent.com/Ghostvli/zte-epg-public/main/epg.xml.gz` |
+| GitHub Raw（xml） | `https://raw.githubusercontent.com/Ghostvli/zte-epg-public/main/epg.xml` |
+| jsDelivr CDN（gz，推荐） | `https://cdn.jsdelivr.net/gh/Ghostvli/zte-epg-public@main/epg.xml.gz` |
+| jsDelivr CDN（xml） | `https://cdn.jsdelivr.net/gh/Ghostvli/zte-epg-public@main/epg.xml` |
 
 把上面的链接填进软件的「EPG 地址」即可。gz 版体积更小（约 320KB，xml 约 5MB），加载更快；部分老软件不支持 gz，可改用 xml 链接。
 
