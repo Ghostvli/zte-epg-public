@@ -1,0 +1,54 @@
+name: Update EPG
+
+on:
+  schedule:
+    # 北京时间 06:00 = UTC 22:00、18:00 = UTC 10:00，每天两次
+    - cron: '0 22 * * *'
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-epg
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Collect EPG
+        env:
+          ZTE_EAS_IP: ${{ secrets.ZTE_EAS_IP }}
+          ZTE_EAS_PORT: ${{ secrets.ZTE_EAS_PORT }}
+          ZTE_ENCRYPT_KEY: ${{ secrets.ZTE_ENCRYPT_KEY }}
+          ZTE_USER_ID: ${{ secrets.ZTE_USER_ID }}
+          ZTE_STB_ID: ${{ secrets.ZTE_STB_ID }}
+          ZTE_MAC: ${{ secrets.ZTE_MAC }}
+          ZTE_MODEL: ${{ secrets.ZTE_MODEL }}
+          ZTE_OUTPUT_DIR: .
+          ZTE_DAYS: '7'
+        run: python3 collect_epg.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git add epg.xml epg.xml.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update epg $(date -u +%Y%m%d%H%M)"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
